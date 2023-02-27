@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(()=>{
     dispatch(getPosts());
-  },[dispatch]);
+  },[dispatch, currentId]);
   return (
     <Container maxWidth="lg">
       <AppBar className={classes.appBar} position="static" color="inherit">
