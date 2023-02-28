@@ -12,6 +12,9 @@ export const posts = createReducer(allPosts,{
         return [...allPosts, action.payload];
     },
     UPDATE: (state, action) =>{
+        return allPosts.filter((post) => post.id !== action.payload);
+    },
+    DELETE: (state, action) =>{
         return allPosts.map((post) => post._id === action.payload._id ? action.payload : allPosts);
     },
 })
