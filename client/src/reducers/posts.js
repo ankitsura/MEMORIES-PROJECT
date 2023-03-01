@@ -1,23 +1,75 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { createReducer, createAction } from "@reduxjs/toolkit";
 
-// initial state of posts
-const allPosts = [];
+const FETCH_ALL = createAction('FETCH_ALL')
+const CREATE = createAction('CREATE')
+const UPDATE = createAction('UPDATE')
+const DELETE = createAction('DELETE')
+const LIKE_POST = createAction('LIKE_POST')
+
+const initialState = [];
+
+export const posts = createReducer(initialState, (builder) => {
+  builder
+    .addCase(FETCH_ALL, (state, action) => {
+        return action.payload;
+    })
+    .addCase(CREATE, (state, action) => {
+        return [...state, action.payload];
+    })
+    .addCase(UPDATE, (state, action) => {
+        return state.map((post) => post._id === action.payload._id ? action.payload : post);
+    })
+    .addCase(DELETE, (state, action) => {
+        return state.filter((post) => post._id !== action.payload);
+    })
+    .addCase(LIKE_POST, (state, action) => {
+        return state.map((post) => post._id === action.payload._id ? action.payload : post);
+    })
+})
+// const postSlice = createSlice({
+//     initialState,
+//     reducers: {
+//         FETCH_ALL(state, action) {
+//             return action.payload;
+//         },
+//       CREATE(state, action) {
+//         return [state, action.payload];
+//     },
+//     UPDATE(state, action) {
+//         return state.filter((post) => post._id !== action.payload);
+//     },
+//     DELETE(state, action) {
+//         return state.map((post) => post._id === action.payload._id ? action.payload : state);
+//     },
+//     LIKE_POST(state, action) {
+//           return state.posts.map((post) => post._id === action.payload._id ? action.payload : state);
+//       },
+//     },
+//   })
+  
+//   export default postSlice.reducer;
+
+
 
 // action.payload is used to receive paramiters or value from the user 
-export const posts = createReducer(allPosts,{
-    FETCH_ALL: (state, action) =>{
-        return action.payload;
-    },
-    CREATE: (state, action) =>{
-        return [...allPosts, action.payload];
-    },
-    UPDATE: (state, action) =>{
-        return allPosts.filter((post) => post.id !== action.payload);
-    },
-    DELETE: (state, action) =>{
-        return allPosts.map((post) => post._id === action.payload._id ? action.payload : allPosts);
-    },
-})
+// export const posts = createReducer([],{
+//     FETCH_ALL: (state, action) =>{
+//         return action.payload;
+//     },
+//     CREATE: (state, action) =>{
+//         return [state, action.payload];
+//     },
+//     UPDATE: (state, action) =>{
+//         return state.filter((post) => post._id !== action.payload);
+//     },
+//     DELETE: (state, action) =>{
+//         return state.map((post) => post._id === action.payload._id ? action.payload : state);
+//     },
+//     LIKE_POST: (state, action) =>{
+//         console.log(state);
+//         return state.map((post) => post._id === action.payload._id ? action.payload : state);
+//     },
+// })
 
 
 

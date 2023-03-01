@@ -24,8 +24,6 @@ export const createPost = (post) => async (dispatch) => {
         });
     } catch (error) {
         console.log(error.message);
-    } finally{
-        dispatch( getPosts() );
     }
 }
 
@@ -38,8 +36,6 @@ export const updatePost = (id, post) => async (dispatch) => {
         });
     } catch (error) {
         console.log(error.message);
-    } finally{
-        dispatch( getPosts() );
     }
 }
 
@@ -52,7 +48,17 @@ export const deletePost = (id) => async (dispatch) => {
         });
     } catch (error) {
         console.log(error.message);
-    } finally{
-        dispatch( getPosts() );
+    }
+}
+
+export const likePost = (id) => async (dispatch) => {
+    try {
+        const  { data } = await api.likePost(id);
+        await dispatch ({
+            type: 'LIKE_POST',
+            payload: data
+        });
+    } catch (error) {
+        console.log(error.message);
     }
 }
