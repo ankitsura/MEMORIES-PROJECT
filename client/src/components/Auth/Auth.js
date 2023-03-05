@@ -49,6 +49,7 @@ const Auth = () => {
     const googleFailure = () =>{
         console.log('Google Sign In failure. Try again later');
     }
+    
   return (
     <Container component="main" maxWidth="xs">
        <Paper className={classes.paper} elevation={3}>
