@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
 
 import useStyles from './styles';
@@ -8,7 +9,21 @@ import memories from '../../images/memories.png';
 
 const Navbar = () => {
     const classes = useStyles();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const logOut = () => {
+      dispatch({type: 'LOGOUT'});
+      navigate('/auth');
+      setUser(null);
+    };
+
+    useEffect(() => {
+      //const token = user?.token;
+      //JWT.....
+      setUser(JSON.parse(localStorage.getItem('profile')));
+    }, [location]);
 
   return (
         <AppBar className={classes.appBar} position="static" color="inherit">
@@ -21,10 +36,10 @@ const Navbar = () => {
                 user ? (
                   <div className={classes.profile}>
                     <div className={classes.avatar}>
-                      <Avatar className={classes.purple} src={user.picture} alt={user.name}>{user.name.charAt(0)}</Avatar>
-                      <Typography className={classes.userName} variant="h6">{user.name}</Typography>
+                      <Avatar className={classes.purple} src={user.result.picture} alt={user.result.name}>{user.result.name.charAt(0)}</Avatar>
+                      <Typography className={classes.userName} variant="h6">{user.result.name}</Typography>
                     </div>
-                    <Button variant='contained' className={classes.logout} color='secondary'>Logout</Button>
+                    <Button variant='contained' onClick={logOut} className={classes.logout} color='secondary'>Logout</Button>
                   </div>
                 ) : (
                   <Button component={Link} to='/auth' variant='contained' color='primary'>Sign In</Button>

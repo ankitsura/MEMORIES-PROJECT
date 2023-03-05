@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 import dotenv from 'dotenv'
 import jwtDecode from 'jwt-decode'
 import { useDispatch } from 'react-redux'
@@ -19,6 +20,7 @@ const Auth = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
     const dispatch =  useDispatch();
+    const navigate = useNavigate();
 
     const handleSubmit = () => {
 
@@ -34,10 +36,12 @@ const Auth = () => {
         setShowPassword(false);
     }
     const googleSuccess = (res) =>{
+        const token = res?.credential;
+        const result = jwtDecode(res?.credential);
+
         try {
-            const userObject = jwtDecode(res?.credential);
-            // dispatch({type: 'AUTH', data: {userObject}});
-            localStorage.setItem('profile', JSON.stringify(userObject));
+            dispatch({type: 'AUTH', data: {result, token}});
+            navigate('/');
         } catch (error) {
             console.log('error',error);
         }
@@ -81,19 +85,17 @@ const Auth = () => {
                     onError={googleFailure}
                 />
             </GoogleOAuthProvider> */}
-            <GoogleOAuthProvider clientId="911641069648-6ed8spt8jg317l0tht184feke10lirle.apps.googleusercontent.com">
             <GoogleLogin
-            render={(renderProps) => (
-              <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
-              </Button>
-            )}
-            text='Google Sign In'
-            disabled
-            onSuccess={googleSuccess}
-            onError={googleFailure}
-            cookiePolicy="single_host_origin"
+                render={(renderProps) => (
+                <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
+                </Button>
+                )}
+                text='Google Sign In'
+                disabled
+                onSuccess={googleSuccess}
+                onError={googleFailure}
+                cookiePolicy="single_host_origin"
           />
-            </GoogleOAuthProvider>
             <Grid container justifyContent='flex-end'>
                 <Grid item>
                     <Button onClick={switchMode}>
