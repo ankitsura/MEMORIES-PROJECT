@@ -13,8 +13,8 @@ import { useDispatch } from 'react-redux';
 const Post = ({post, setCurrentId}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem('profile')).result;
-  const userId = user?.sub || user._id;
+  const user = JSON.parse(localStorage.getItem('profile'))?.result;
+  const userId = user?.sub || user?._id;
 
   const Likes = () => {
     if (post?.likes?.length > 0) {
@@ -51,10 +51,13 @@ const Post = ({post, setCurrentId}) => {
         <Button size='small' color='primary' disabled={!user} onClick={() => dispatch(likePost(post._id))}>
           <Likes/>
         </Button>
-        <Button  size='small' disabled={userId!==post.creator} color='primary' onClick={() => dispatch(deletePost(post._id))}>
-          <DeleteIcon fontSize='small'/>
-          Delete
-        </Button>
+        {
+          (userId === post.creator) && 
+          <Button  size='small' color='primary' onClick={() => dispatch(deletePost(post._id))}>
+            <DeleteIcon fontSize='small'/>
+            Delete
+          </Button>
+        }
       </CardActions>
     </Card>
   );

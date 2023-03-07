@@ -13,7 +13,7 @@ const Form = ({currentId, setCurrentId}) => {
   const classes = makeStyles();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem('profile'))?.result;
-  const userId = user?.sub || user?._id;
+  // const userId = user?.sub || user?._id;
 
   useEffect(() => {
     if(editPost) setPostData(editPost);
