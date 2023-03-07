@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grid, Grow } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
-import { getPosts } from '../../actions/posts';
+import { getPosts } from '../../actions/postsActions';
 import Posts from '../Posts/Posts';
 import Form from '../Form/Form';
 import useStyles from '../../styles';

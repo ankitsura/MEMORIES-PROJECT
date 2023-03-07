@@ -6,8 +6,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import { applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import {posts} from './reducers/posts.js';
-import {authReducer} from './reducers/auth.js';
+import {posts} from './reducers/postsReducer';
+import {authReducer} from './reducers/authReducer';
 
 
 import App from "./App";

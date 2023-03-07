@@ -1,4 +1,4 @@
-import Post from '../models/postMessage.js';
+import Post from '../models/postSchema.js';
 import mongoose from 'mongoose';
 
 export const getPosts = async (req, res) => {
@@ -13,7 +13,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
     const post = req.body;
-    const newPost = new Post(post);
+    const newPost = new Post({...post, creator: req.userId});
     try {
         await newPost.save();
         res.status(201).json(newPost);
@@ -45,11 +45,19 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
     const id = req.params.id;
-    
+    if(!req.userId) return res.json({message: 'Unauthenticated'});
     if(!mongoose.Types.ObjectId.isValid(id)) return res.ststus(404).send('No post with that id');
 
     const post = await Post.findById(id);
-    const updatedPost = await Post.findByIdAndUpdate(id, { likeCount: post.likeCount + 1 }, { new: true });
+    console.log('one',post);
+    const index =  post.likes.findIndex((id) => id === String(req.userId));
+    if(index === -1){
+        post.likes.push(req.userId);
+        post.save();
+    } else {
+        post.likes = post.likes.filter((id) => id !== String(req.userId));
+        post.save();
+    }
 
-    res.json(updatedPost);
+    res.status(200).json(post);
 }

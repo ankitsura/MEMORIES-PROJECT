@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
+// import jwtDecode from 'jwt-decode';
+
 
 import useStyles from './styles';
 import memories from '../../images/memories.png';
-
 
 const Navbar = () => {
     const classes = useStyles();
@@ -18,10 +19,13 @@ const Navbar = () => {
       navigate('/auth');
       setUser(null);
     };
-
+    
+    
     useEffect(() => {
-      //const token = user?.token;
-      //JWT.....
+      //  const token = user?.token;
+      //  if (token) {
+      //    const decodedToken = jwtDecode(token);
+      //  }
       setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
