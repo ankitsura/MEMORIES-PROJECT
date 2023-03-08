@@ -1,16 +1,20 @@
 import { createReducer, createAction } from "@reduxjs/toolkit";
 
-const FETCH_ALL = createAction('FETCH_ALL')
-const CREATE = createAction('CREATE')
-const UPDATE = createAction('UPDATE')
-const DELETE = createAction('DELETE')
-const LIKE_POST = createAction('LIKE_POST')
+const FETCH_ALL = createAction('FETCH_ALL');
+const FETCH_BY_SEARCH = createAction('FETCH_BY_SEARCH');
+const CREATE = createAction('CREATE');
+const UPDATE = createAction('UPDATE');
+const DELETE = createAction('DELETE');
+const LIKE_POST = createAction('LIKE_POST');
 
 const initialState = [];
 
 export const posts = createReducer(initialState, (builder) => {
   builder
     .addCase(FETCH_ALL, (state, action) => {
+        return action.payload;
+    })
+    .addCase(FETCH_BY_SEARCH, (state, action) => {
         return action.payload;
     })
     .addCase(CREATE, (state, action) => {
