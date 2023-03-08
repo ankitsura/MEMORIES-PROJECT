@@ -43,7 +43,7 @@ export const signin = async (req, res) => {
             return res.status(400).json({message: 'Invalid credentials!'});
         }
         
-        const token = jwt.sign({user}, process.env.JWT_SECRET);
+        const token = jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: '1h'} );
         if(!token){
             return res.status(404).json({message: 'No Token'});
         }

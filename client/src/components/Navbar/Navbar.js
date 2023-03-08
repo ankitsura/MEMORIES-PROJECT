@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
-// import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 
 import useStyles from './styles';
@@ -14,18 +14,26 @@ const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
+
     const logOut = () => {
       dispatch({type: 'LOGOUT'});
       navigate('/auth');
       setUser(null);
     };
+
+    useEffect(() => {
+      const token = user?.token;
+       if (token) {
+         const decodedToken = jwtDecode(token);
+         if(decodedToken.exp * 1000 < new Date().getTime()){
+          logOut();
+          }
+        }
+    });
     
     
     useEffect(() => {
-      //  const token = user?.token;
-      //  if (token) {
-      //    const decodedToken = jwtDecode(token);
-      //  }
       setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
