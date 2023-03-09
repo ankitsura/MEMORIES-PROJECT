@@ -25,6 +25,7 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const query = useQuery();
+  console.log(query);
   const page = query.get('page') || 1;
   const searchQuery = query.get('searchQuery');
   
@@ -88,7 +89,7 @@ const Home = () => {
               </AppBar>
               <Form currentId={currentId} setCurrentId={setCurrentId}/>
               <Paper className={classes.pagination} elevation={6}>
-                <Paginate/>
+                <Paginate page={page}/>
               </Paper>
             </Grid>
           </Grid>

@@ -12,10 +12,18 @@ const initialState = [];
 export const posts = createReducer(initialState, (builder) => {
   builder
     .addCase(FETCH_ALL, (state, action) => {
-        return action.payload;
+        return {
+            ...state,
+            posts: action.payload.data,
+            currentPage: action.payload.currentPage,
+            numberOfPages: action.payload.numberOfPages
+        };
     })
     .addCase(FETCH_BY_SEARCH, (state, action) => {
-        return action.payload;
+        return {
+            ...state,
+            posts: action.payload
+        };
     })
     .addCase(CREATE, (state, action) => {
         return [...state, action.payload];
