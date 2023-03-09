@@ -25,16 +25,11 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const query = useQuery();
-  console.log(query);
   const page = query.get('page') || 1;
   const searchQuery = query.get('searchQuery');
   
   const [search, setSearch] = useState('');
   const [tags, setTags] = useState([]);
- 
-  useEffect(()=>{
-    dispatch(getPosts());
-  },[currentId, dispatch]);
   
   const searchPost = () => {
     if(search.trim() || tags.length > 0){
@@ -58,6 +53,10 @@ const Home = () => {
   const handleDelete = (deleteTag) => {
     setTags(tags.filter((tag) => tag !== deleteTag));
   }
+
+  useEffect(()=>{
+    dispatch(getPosts());
+  },[currentId, dispatch]);
 
   return (
     <Grow in>
@@ -88,9 +87,9 @@ const Home = () => {
                 <Button onClick={searchPost} color='primary' variant='contained'>Search</Button>
               </AppBar>
               <Form currentId={currentId} setCurrentId={setCurrentId}/>
-              <Paper className={classes.pagination} elevation={6}>
+              {(!searchQuery) && <Paper className={classes.pagination} elevation={6}>
                 <Paginate page={page}/>
-              </Paper>
+              </Paper>}
             </Grid>
           </Grid>
         </Container>
