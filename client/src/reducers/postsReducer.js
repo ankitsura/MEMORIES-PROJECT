@@ -1,29 +1,49 @@
 import { createReducer, createAction } from "@reduxjs/toolkit";
 
-const FETCH_ALL = createAction('FETCH_ALL')
-const CREATE = createAction('CREATE')
-const UPDATE = createAction('UPDATE')
-const DELETE = createAction('DELETE')
-const LIKE_POST = createAction('LIKE_POST')
+const FETCH_ALL = createAction('FETCH_ALL');
+const FETCH_BY_SEARCH = createAction('FETCH_BY_SEARCH');
+const CREATE = createAction('CREATE');
+const UPDATE = createAction('UPDATE');
+const DELETE = createAction('DELETE');
+const LIKE_POST = createAction('LIKE_POST');
+const START_LOADING = createAction('START_LOADING');
+const END_LOADING = createAction('END_LOADING');
 
-const initialState = [];
+const initialState = {isLoading:true, posts:[]};
 
 export const posts = createReducer(initialState, (builder) => {
   builder
     .addCase(FETCH_ALL, (state, action) => {
-        return action.payload;
+        return {
+            ...state,
+            posts: action.payload.data,
+            currentPage: action.payload.currentPage,
+            numberOfPages: action.payload.numberOfPages
+        };
+    })
+    .addCase(FETCH_BY_SEARCH, (state, action) => {
+        return {
+            ...state,
+            posts: action.payload
+        };
     })
     .addCase(CREATE, (state, action) => {
-        return [...state, action.payload];
+        return {...state, posts: [...state.posts, action.payload]};
     })
     .addCase(UPDATE, (state, action) => {
-        return state.map((post) => post._id === action.payload._id ? action.payload : post);
+        return {...state, posts: state.posts.map((post) => post._id === action.payload._id ? action.payload : post)}
     })
     .addCase(DELETE, (state, action) => {
-        return state.filter((post) => post._id !== action.payload);
+        return {...state, posts: state.posts.filter((post) => post._id !== action.payload)}
     })
     .addCase(LIKE_POST, (state, action) => {
-        return state.map((post) => post._id === action.payload._id ? action.payload : post);
+        return {...state, posts: state.posts.map((post) => post._id === action.payload._id ? action.payload : post)}
+    })
+    .addCase(START_LOADING, (state, action) => {
+        return {...state, isLoading: true}
+    })
+    .addCase(END_LOADING, (state, action) => {
+        return {...state, isLoading: false}
     })
 })
 // const postSlice = createSlice({
