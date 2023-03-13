@@ -11,6 +11,10 @@ const postSchema = mongoose.Schema({
         type: [String],
         default: []
     },
+    comments: {
+        type: [String],
+        default: []
+    },
 },{timestamps: true});
 
 export default mongoose.model('Post', postSchema);

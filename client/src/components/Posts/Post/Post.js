@@ -70,9 +70,9 @@ const Post = ({post, setCurrentId}) => {
         </Button>
         {
           (userId === post.creator) && 
-          <Button  size='small' color='primary' onClick={() => dispatch(deletePost(post._id))}>
+          <Button  size='small' color='secondary' onClick={() => dispatch(deletePost(post._id))}>
             <DeleteIcon fontSize='small'/>
-            Delete
+            &nbsp; Delete
           </Button>
         }
       </CardActions>

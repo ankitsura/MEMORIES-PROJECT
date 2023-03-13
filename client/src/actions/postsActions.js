@@ -4,11 +4,13 @@ import * as api from '../api';
 
 export const getPost = (id) => async (dispatch) => {
     try {
+
       dispatch({ type: 'START_LOADING' });
   
       const { data } = await api.fetchPost(id);
       dispatch({ type: 'FETCH_POST', payload: data });
       dispatch({ type: 'END_LOADING' });
+
     } catch (error) {
       console.log(error);
     }
@@ -16,6 +18,7 @@ export const getPost = (id) => async (dispatch) => {
 
 export const getPosts = (page) => async (dispatch) => {
     try {
+
         dispatch({type: 'START_LOADING'});
         const { data } = await api.fetchPosts(page);
         dispatch ({
@@ -28,8 +31,10 @@ export const getPosts = (page) => async (dispatch) => {
         console.log(error.message);
     }
 };
+
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
     try {
+
         dispatch({type: 'START_LOADING'});
         const { data } = await api.getPostsBySearch(searchQuery);
         dispatch ({
@@ -45,12 +50,14 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 
 export const createPost = (post, navigate) => async (dispatch) => {
     try {
+
         const {data} = await api.createPost(post);
         dispatch ({
             type: 'CREATE',
             payload: data
         });
         navigate(`/posts/${data._id}`)
+
     } catch (error) {
         console.log(error.message);
     }
@@ -58,11 +65,13 @@ export const createPost = (post, navigate) => async (dispatch) => {
 
 export const updatePost = (id, post) => async (dispatch) => {
     try {
+
         const { data } = await api.updatePost(id, post);
         dispatch ({
             type: 'UPDATE',
             payload: data
         });
+
     } catch (error) {
         console.log(error.message);
     }
@@ -70,11 +79,13 @@ export const updatePost = (id, post) => async (dispatch) => {
 
 export const deletePost = (id) => async (dispatch) => {
     try {
+
         await api.deletePost(id);
         dispatch ({
             type: 'DELETE',
             payload: id
         });
+
     } catch (error) {
         console.log(error.message);
     }
@@ -82,11 +93,28 @@ export const deletePost = (id) => async (dispatch) => {
 
 export const likePost = (id) => async (dispatch) => {
     try {
+
         const  { data } = await api.likePost(id);
-        await dispatch ({
+        dispatch ({
             type: 'LIKE_POST',
             payload: data
         });
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+export const addComment = (id, value) => async (dispatch) => {
+    try {
+
+        const  { data } = await api.addComment(id, value);
+        dispatch ({
+            type: 'ADD_COMMENT',
+            payload: data
+        });
+        return data.comments;
+
     } catch (error) {
         console.log(error.message);
     }

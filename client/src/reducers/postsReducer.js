@@ -7,6 +7,7 @@ const CREATE = createAction('CREATE');
 const UPDATE = createAction('UPDATE');
 const DELETE = createAction('DELETE');
 const LIKE_POST = createAction('LIKE_POST');
+const ADD_COMMENT = createAction('ADD_COMMENT');
 const START_LOADING = createAction('START_LOADING');
 const END_LOADING = createAction('END_LOADING');
 
@@ -45,6 +46,12 @@ export const posts = createReducer(initialState, (builder) => {
     })
     .addCase(LIKE_POST, (state, action) => {
         return {...state, posts: state.posts.map((post) => post._id === action.payload._id ? action.payload : post)}
+    })
+    .addCase(ADD_COMMENT, (state, action) => {
+        return {
+            ...state, 
+            posts: state.posts.map((post) => post._id === action.payload._id ? action.payload : post)
+        }
     })
     .addCase(START_LOADING, (state, action) => {
         return {...state, isLoading: true}
