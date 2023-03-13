@@ -1,6 +1,7 @@
 import { createReducer, createAction } from "@reduxjs/toolkit";
 
 const FETCH_ALL = createAction('FETCH_ALL');
+const FETCH_POST = createAction('FETCH_POST');
 const FETCH_BY_SEARCH = createAction('FETCH_BY_SEARCH');
 const CREATE = createAction('CREATE');
 const UPDATE = createAction('UPDATE');
@@ -16,9 +17,15 @@ export const posts = createReducer(initialState, (builder) => {
     .addCase(FETCH_ALL, (state, action) => {
         return {
             ...state,
-            posts: action.payload.data,
+            posts: action.payload.posts,
             currentPage: action.payload.currentPage,
             numberOfPages: action.payload.numberOfPages
+        };
+    })
+    .addCase(FETCH_POST, (state, action) => {
+        return {
+            ...state,
+            post: action.payload
         };
     })
     .addCase(FETCH_BY_SEARCH, (state, action) => {

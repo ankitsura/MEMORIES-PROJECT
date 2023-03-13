@@ -4,11 +4,11 @@ import mongoose from 'mongoose';
 export const getPosts = async (req, res) => {
     const { page } = req.query;
     try {
-        const LIMIT = 8;
+        const LIMIT = 6;
         const startIndex = (Number(page) - 1) * LIMIT;
         const total = await Post.countDocuments({});
         const posts = await Post.find().sort({_id: -1}).limit(LIMIT).skip(startIndex);
-        return res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
+        return res.status(200).json({ posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
     } catch (error) {
         return res.status(404).json({message: error.message});
     }

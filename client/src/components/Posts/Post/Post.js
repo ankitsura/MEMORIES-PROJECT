@@ -1,11 +1,12 @@
 import React from 'react';
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
 import { deletePost, likePost } from '../../../actions/postsActions';
+import { useNavigate } from 'react-router-dom';
 
 import useStyles from './styles.js';
 import { useDispatch } from 'react-redux';
@@ -13,6 +14,7 @@ import { useDispatch } from 'react-redux';
 const Post = ({post, setCurrentId}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'))?.result;
   const userId = user?.sub || user?._id;
 
@@ -28,19 +30,30 @@ const Post = ({post, setCurrentId}) => {
     return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
   };
 
+  const openPost = () => {
+    navigate(`/posts/${post._id}`);
+  }
+
   return (
     <Card className={classes.card} elevation={6} raised> 
+    <ButtonBase component="span" name="test" className={classes.cardAction} onClick={openPost}>
       <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
       <div className={classes.overlay}>
         <Typography variant='h6'>{post.name}</Typography>
         <Typography variant='body2'>{moment(post.createdAt).fromNow()}</Typography>
       </div>
-      <div className={classes.overlay2}>
+      <div className={classes.overlay2} name='edit'>
       {
         (userId === post.creator) && 
-        <Button style={{color:'white'}} size='small' onClick={() => setCurrentId(post._id)}>
-          <MoreHorizIcon fontSize="medium"/>
-        </Button>
+      <Button onClick={(e) => {
+        e.stopPropagation();
+        setCurrentId(post._id);
+        }}
+        style={{ color: 'white' }}
+        size="small"
+      >
+        <MoreHorizIcon fontSize="medium" />
+      </Button>
       }
       </div>
       <div className={classes.details}>
@@ -50,6 +63,7 @@ const Post = ({post, setCurrentId}) => {
       <CardContent>
         <Typography variant="body2" color='textSecondary' component='p'>{post.message}</Typography>
       </CardContent>
+      </ButtonBase>
       <CardActions className={classes.cardActions}>
         <Button size='small' color='primary' disabled={!user} onClick={() => dispatch(likePost(post._id))}>
           <Likes/>

@@ -1,6 +1,6 @@
 import React , {useEffect} from "react";
 import { Pagination, PaginationItem } from "@material-ui/lab";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,7 @@ const Paginate = ({page}) => {
         if(page){
           dispatch(getPosts(page));
         }   
-    }, [page]);
+    }, [dispatch,page]);
 
     return (
         <Pagination

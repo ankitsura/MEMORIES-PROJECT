@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Button, Container, Grid, Grow, Paper, TextField } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import ChipInput from 'material-ui-chip-input';
 
-import { fetchPostsBySearch, getPosts } from '../../actions/postsActions';
+import { getPostsBySearch } from '../../actions/postsActions';
 import Posts from '../Posts/Posts';
 import Form from '../Form/Form';
 import useStyles from './styles.js';
@@ -14,16 +14,12 @@ function useQuery(){
   return new URLSearchParams(useLocation().search);
 }
 
-
-
-
 const Home = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [currentId, setCurrentId] = useState(null);
   
   const navigate = useNavigate();
-  const location = useLocation();
   const query = useQuery();
   const page = query.get('page') || 1;
   const searchQuery = query.get('searchQuery');
@@ -33,7 +29,7 @@ const Home = () => {
   
   const searchPost = () => {
     if(search.trim() || tags.length > 0){
-      dispatch(fetchPostsBySearch({search, tags: tags.join(',')}));
+      dispatch(getPostsBySearch({search, tags: tags.join(',')}));
       navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
     } else {
       console.log('else part');
@@ -53,10 +49,6 @@ const Home = () => {
   const handleDelete = (deleteTag) => {
     setTags(tags.filter((tag) => tag !== deleteTag));
   }
-
-  useEffect(()=>{
-    dispatch(getPosts());
-  },[currentId, dispatch]);
 
   return (
     <Grow in>

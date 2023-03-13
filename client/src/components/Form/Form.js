@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64'; 
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 import makeStyles from './styles.js';
@@ -12,6 +13,7 @@ const Form = ({currentId, setCurrentId}) => {
   const editPost = useSelector((state) => currentId ? state.posts.posts.find((post) => post._id === currentId) : null);
   const classes = makeStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'))?.result;
   // const userId = user?.sub || user?._id;
 
@@ -24,7 +26,7 @@ const Form = ({currentId, setCurrentId}) => {
     if(currentId){
       dispatch(updatePost(currentId, postData));
     } else {
-    dispatch(createPost({...postData, name: user?.name }));
+      dispatch(createPost({...postData, name: user?.name }, navigate));
     }
     clear();
   }
